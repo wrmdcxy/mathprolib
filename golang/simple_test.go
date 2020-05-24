@@ -48,7 +48,7 @@ func TestFloorandCeil(t *testing.T){
 		t.Log("Success.",res,res2)
 	}
 }
-func TestFloorandCeil(t *testing.T){
+func TestAbs(t *testing.T){
 	if res,res2:=Abs(-2.5),Abs(5.6);res != 2.5||res2 != 5.6{
 		t.Fatal("Failed,result=",res,res2,".The result should be 2.5,5.6.")
 	}else{
