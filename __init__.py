@@ -5,6 +5,7 @@
 import math
 from functools import total_ordering
 
+REAL = float
 
 e = math.e
 π = math.pi
@@ -23,4 +24,26 @@ class INF:
 
 Infinity = INF()
 
+def root(num:REAL,exp:REAL):
+    """
+    
+    :rtype: REAL
+    :param num: 开方底数
+    :param exp: 开方指数
+    :return: 结果
+    
+    """
+    result = num**(1/exp)
+    if not isinstance(result,complex):
+        return num**(1/exp)
+    else:
+        return math.nan
+
+def sqrt(num:REAL):
+    """
+    
+    :param num:要开方的数 
+    :return: 结果
+    """
+    return root(num,2)
 
