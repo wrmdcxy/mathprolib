@@ -5,6 +5,8 @@ import (
 const pi = 3.14159265358979
 const e = 2.718281828459045
 const NaN = math.NaN
+const Infinity = math.Inf()
+const NegtiveInfinity = math.Inf(-1)
 func Pow(base float64,exp float64)(float64){
 	return math.Pow(base,exp) 
 }
