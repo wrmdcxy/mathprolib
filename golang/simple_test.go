@@ -42,8 +42,15 @@ func TestRound(t *testing.T){
 //Tested.ok
 //3:ok,3.332s
 func TestFloorandCeil(t *testing.T){
-	if res,res2:=Floor(2.361237633772981827312897716),Ceil(1.129376215362789127888827763663287);res!=2.0 || res2!=2.0{
+	if res,res2:=Floor(2.361237633772981827312897716),Ceil(1.129376215362789127888827763663287);res!=2|| res2!=2{
 		t.Fatal("Failed,result=",res,res2,".The result should be 2,2.")
+	}else{
+		t.Log("Success.",res,res2)
+	}
+}
+func TestFloorandCeil(t *testing.T){
+	if res,res2:=Abs(-2.5),Abs(5.6);res != 2.5||res2 != 5.6{
+		t.Fatal("Failed,result=",res,res2,".The result should be 2.5,5.6.")
 	}else{
 		t.Log("Success.",res,res2)
 	}
