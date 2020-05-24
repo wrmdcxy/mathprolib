@@ -1,7 +1,6 @@
-package main
+package mathprolib
 import (
-"math"
-"fmt"
+	"math"
 )
 const pi = 3.14159265358979
 const e = 2.718281828459045
@@ -24,6 +23,6 @@ func Ceil(num float64)(int64){
 	return int64(math.Ceil(num))
 }
 func Abs(num float64)(float64){
-    if(num>0){return num}
-    return -num
+	if(num>0){return num}
+	return -num
 }
