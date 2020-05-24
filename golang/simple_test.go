@@ -49,7 +49,7 @@ func TestFloorandCeil(t *testing.T){
 
 
 //Tested.ok
-//4:Failed [build failed]
+//4:Fail,[build failed]
 //5:ok,3.407s
 func TestAbs(t *testing.T){
 	if res,res2:=Abs(-2.5),Abs(5.6);res != 2.5||res2 != 5.6{
