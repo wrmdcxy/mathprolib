@@ -3,6 +3,8 @@ import (
 	_ "fmt"
 	"math"
 )
+const pi := 3.14159265358979
+const e := 2.718281828459045
 func Pow(base float64,exp float64)(float64){
 	return math.Pow(base,exp) 
 }
@@ -12,12 +14,16 @@ func Root(base float64,exp float64)(float64){
 func Sqrt(num float64)(float64){
 	return Root(num,2.0)
 }
-func Round(num float64)(float64){
+func Round(num float64)(int64){ // 取整要返回整数啊啊
 	return math.Floor(num+0.5)
 }
-func Floor(num float64)(float64){
-	return math.Floor(num)
+func Floor(num float64)(int64){
+	return math.Floor(num)      
 }
-func Ceil(num float64)(float64){
+func Ceil(num float64)(int64){
 	return math.Ceil(num)
+}
+func Abs(num float64)(float64){
+    if(num>0){return num}
+    return -num
 }
