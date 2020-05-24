@@ -1,8 +1,5 @@
 package mathprolib
-import (
-	_ "fmt"
-	"math"
-)
+import "math"
 const pi := 3.14159265358979
 const e := 2.718281828459045
 func Pow(base float64,exp float64)(float64){
