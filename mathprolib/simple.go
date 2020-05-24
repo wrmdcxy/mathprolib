@@ -4,10 +4,12 @@ import (
 )
 const pi = 3.14159265358979
 const e = 2.718281828459045
+const NaN = math.NaN
 func Pow(base float64,exp float64)(float64){
 	return math.Pow(base,exp) 
 }
 func Root(base float64,exp float64)(float64){
+    if(exp%2==0&&base<0){return NaN}
 	return Pow(base,1/exp)
 }
 func Sqrt(num float64)(float64){
