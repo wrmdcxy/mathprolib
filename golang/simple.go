@@ -7,8 +7,8 @@ func Pow(base float64,exp float64)(float64){
     return math.Pow(base,exp) 
 }
 func Root(base float64,exp float64)(float64){
-    return pow(base,1/exp)
+    return Pow(base,1/exp)
 }
 func Sqrt(num float64)(float64){
-    return root(num,2.0)
+    return Root(num,2.0)
 }
