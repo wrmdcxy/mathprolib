@@ -1,5 +1,5 @@
 package mathprolib
-import m"math"
+import "math"
 
 Sinh:=m.Sin
 Cosh:=m.Cos
