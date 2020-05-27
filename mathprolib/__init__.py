@@ -9,11 +9,15 @@ REAL = float
 Ф = (math.sqrt(5) - 1) / 2
 γ = 0.5772156649015328
 
-sin, cos, tan = lambda n: math.sin(math.radians(n)), lambda n: math.cos(math.radians(n)), lambda n: math.tan(
-    math.radians(n))
+def deg(num):
+    return num*180/math.pi
+def rad(num):
+    return num/180*math.pi
+
+
+sin, cos, tan = lambda n: math.sin(rad(n)), lambda n: math.cos(rad(n)), lambda n: math.tan(rad(n))
 sinh,cosh,tanh = math.sin,math.cos,math.tan
 asin,acos,atan = math.asin,math.acos,math.atan
-deg,rad = math.degrees,math.radians
 ln,log,log2 = math.log,math.log10,math.log2
 π,e,fact = math.pi,math.e,math.factorial
 def gcd(x, y):
@@ -76,3 +80,4 @@ def sqrt(num: REAL):
     :return: 结果
     """
     return root(num, 2)
+
