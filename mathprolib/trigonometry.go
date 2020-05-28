@@ -1,10 +1,10 @@
 package mathprolib
-import "math"
+import m"math"
 func Deg(num float64)(float64){
-    return num*180/math.Pi
+    return num*180/m.Pi
 }
 func Rad(num float64)(float64){
-    return num/180*math.Pi
+    return num/180*m.Pi
 }
 
 Sinh:=m.Sin
