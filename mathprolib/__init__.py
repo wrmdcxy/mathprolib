@@ -3,7 +3,8 @@
 # -*- coding:utf-8 -*-
 
 import math
-from functools import total_ordering
+from functools import total_ordering,reduce
+from operator import and_,mul
 
 REAL = float
 Ф = (math.sqrt(5) - 1) / 2
@@ -80,4 +81,34 @@ def sqrt(num: REAL):
     :return: 结果
     """
     return root(num, 2)
+
+
+def calculate(equation:str):
+    return eval(equation.replace("÷","/").replace("^","**"))
+
+
+def fibonacci(num:int):
+    b = 0
+    temp = 1
+    for _ in range(num):
+        yield temp
+        a = b
+        b = temp
+        temp = a+b
+
+
+def isOdd(num:int) -> bool:
+    return num % 2 == 1
+
+
+def isEven(num:int) -> bool:
+    return num % 2 == 0
+
+
+def isPrime(num:int) -> bool:
+    return not reduce(and_,[num % i == 0 for i in range(2,int(sqrt(num))+1)])
+
+
+def product(iterable):
+    return reduce(mul,iterable)
 
