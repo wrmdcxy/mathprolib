@@ -30,3 +30,4 @@ func Abs(num float64)(float64){
 	if(num>0){return num}
 	return -num
 }
+func Neg(num float64)float
