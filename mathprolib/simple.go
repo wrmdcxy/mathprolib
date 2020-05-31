@@ -2,8 +2,8 @@ package mathprolib
 import (
 	"math"
 )
-const pi = 3.14159265358979
-const e = 2.718281828459045
+const Pi = math.Pi
+const E = math.E
 const NaN = math.NaN
 const Infinity = math.Inf()
 const NegtiveInfinity = math.Inf(-1)
