@@ -4,12 +4,12 @@ import (
 )
 const Pi = math.Pi
 const E = math.E
-const NaN = math.NaN
-const Infinity = math.Inf()
-const NegtiveInfinity = math.Inf(-1)
-const Ln = math.Log  // 白嫖math包的函数太香了（滑稽）
-const Log10 = math.Log10
-const Log2 = math.Log2
+var NaN = math.NaN//bug1
+var Infinity = math.Inf(1)//bug1 and bug2
+var NegtiveInfinity = math.Inf(-1)//bug1
+var Ln = math.Log//bug1
+var Log10 = math.Log10//bug1
+var Log2 = math.Log2//bug1
 func Pow(base float64,exp float64)(float64){
 	return math.Pow(base,exp) 
 }
@@ -34,11 +34,11 @@ func Abs(num float64)(float64){
 	return -num
 }
 func Neg(num float64)float64{
-    return -num//@1048576 是这个意思吗
-}/*@2097152，对哒*/
+    return -num
+}
 func Exp(num float64) float64{
     return Pow(E,num)
 }
 func Log(base float64,exp float64) float64{ 
     return (1/Log10(base))*Log10(exp)
-} // @2097152,自己研究的对数公式
+} // @2097152,自己研究的对数公式    回复@1048576:ok
