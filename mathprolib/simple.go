@@ -7,6 +7,9 @@ const E = math.E
 const NaN = math.NaN
 const Infinity = math.Inf()
 const NegtiveInfinity = math.Inf(-1)
+const Ln = math.Log  // 白嫖math包的函数太香了（滑稽）
+const Log10 = math.Log10
+const Log2 = math.Log2
 func Pow(base float64,exp float64)(float64){
 	return math.Pow(base,exp) 
 }
@@ -32,4 +35,10 @@ func Abs(num float64)(float64){
 }
 func Neg(num float64)float64{
     return -num//@1048576 是这个意思吗
+}/*@2097152，对哒*/
+func Exp(num float64) float64{
+    return Pow(E,num)
 }
+func Log(base float64,exp float64) float64{ 
+    return (1/Log10(base))*Log10(exp)
+} // @2097152,自己研究的对数公式
