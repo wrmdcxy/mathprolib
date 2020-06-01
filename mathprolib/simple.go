@@ -52,7 +52,7 @@ func Smaller(num1 float64,num2 float64)float64{
     if num1<num2{return num1}
     return num2
 }
-func FloatMod(dividend float64,divisor float64)interface{}{
+func FloatMod(dividend float64,divisor float64)float64{
     bs:=float64(math.Pow10(int(Higher(float64(len(strings.Split(strconv.FormatFloat(dividend,'f',-1,64),".")[1])),float64(len(strings.Split(strconv.FormatFloat(divisor,'f',-1,64),".")[1]))))))
     fdividend,fdivisor:=int(dividend*bs),int(divisor*bs)
     res:=fdividend%fdivisor
