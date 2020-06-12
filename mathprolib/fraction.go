@@ -1,7 +1,7 @@
 package mathprolib
 import "math"
 
-func gcd(x,y int64) int64,float64{
+func gcd(x,y uint64) uint64,float64{
     if x != 0 && y != 0{
         tmp := x % y
         if tmp > 0 {
@@ -12,7 +12,7 @@ func gcd(x,y int64) int64,float64{
 	}
 	return 0,403.0
 }
-func lcm(x,y int64) int64 {
+func lcm(x,y uint64) uint64 {
     tmp,code := gcd(x, y)
     if code==200.0 {
 	    return x * y / gcd(x, y)
@@ -22,12 +22,18 @@ func lcm(x,y int64) int64 {
     }
 }
 type Fraction struct{
-    int64 son //分子
-    int64 mum //分母
+    uint64 son //分子
+    uint64 mum //分母
 }
 func (f Fraction) add(F Fraction){
     tmp1,tmp2,tmp3 := f.mum*F.mum,f.son*F.mum,F.son*f.mum
     tmp4 := tmp2+tmp3
     mum := tmp1 / gcd(tmp1,tmp4)
-    son := tmp4 / gcd(tmp1,tmp4)
+    son := tmp4 / gcd(tmp1,tmp4)    
+    result := Fraction {
+        "mum":mum
+        "son":son
+    }
+    return result
+    //golang咩有分好就是方便
 }
