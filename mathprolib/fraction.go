@@ -21,3 +21,13 @@ func lcm(x,y int64) int64 {
         return 403
     }
 }
+type Fraction struct{
+    int64 son //分子
+    int64 mum //分母
+}
+func (f Fraction) add(F Fraction){
+    tmp1,tmp2,tmp3 := f.mum*F.mum,f.son*F.mum,F.son*f.mum
+    tmp4 := tmp2+tmp3
+    mum := tmp1 / gcd(tmp1,tmp4)
+    son := tmp4 / gcd(tmp1,tmp4)
+}
