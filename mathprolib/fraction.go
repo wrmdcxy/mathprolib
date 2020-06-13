@@ -13,7 +13,7 @@ func UGcd(x,y uint64) uint64,float64{
 	return 0,403.0
 }
 func ULcm(x,y uint64) uint64 {
-    tmp,code := gcd(x, y)
+    tmp,code := UGcd(x, y)
     if code==200.0 {
 	    return x * y / UGcd(x, y)
     }
