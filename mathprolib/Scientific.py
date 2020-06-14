@@ -2,11 +2,14 @@ from math import nan as NaN
 from simple import log10
 class Scientific_notation:
     def __init__(self,num,exp):
-        self.num = round(num*1e3)/1e3/10**int(log10(num))
-        self.exp = int(exp)+int(log10(num))
+        self.num = round(num*1e3)/1e3/10**int(log10(abs(num)))
+        self.exp = int(exp)+int(log10(abs(num)))
     
     def __str__(self):
         return "{} * 10^{}".format(self.num,self.exp)
+    
+    def __neg__(self):
+        return Scientific_notation(-(self.num),self.exp)
 
     def __add__(self,other):
         if isinstance(other,Scientific_notation):
@@ -22,6 +25,9 @@ class Scientific_notation:
         else:
             raise TypeError(
                 f"cannot add from type {str(type(other))[8:-2]} to Scientific_notation")
+    
+    def __sub__(self,other):
+        return self+(-other)
 
 
 
