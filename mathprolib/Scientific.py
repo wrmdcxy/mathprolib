@@ -2,8 +2,8 @@ from math import nan as NaN
 from simple import log10
 class Scientific_notation:
     def __init__(self,num,exp):
-        self.num = round(num*1e3)/1e3/10**int(log(num))
-        self.exp = int(exp)+int(log(num))
+        self.num = round(num*1e3)/1e3/10**int(log10(num))
+        self.exp = int(exp)+int(log10(num))
     
     def __str__(self):
         return "{} * 10^{}".format(self.num,self.exp)
