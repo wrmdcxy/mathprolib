@@ -1,13 +1,22 @@
+
+from functools import total_ordering
+
+
 def gcd(x, y):
     smaller = x if x < y else y
     g = [i for i in range(1, smaller + 1) if x % i == 0 and y % i == 0][-1]
     return g
 
 
+@total_ordering
 class Fraction:
-#    def __init__(self, _fraction):
- #       self.numerator = _fraction.numerator
- #       self.denominator = _fraction.denominator
+
+    def __lt__(self, other):
+        if isinstance(other,Fraction):
+            numerator1 = self.numerator*other.denominator
+            numerator2 = self.denominator*other.numerator
+            return numerator1 < numerator2
+
 
     def __init__(self, numerator, denominator):
         self.numerator = numerator
@@ -80,12 +89,82 @@ class Fraction:
             raise TypeError(
                 f"cannot div from type {str(type(other))[8:-2]} to Fraction")
 
+    def reciprocal(self):
+        return Fraction(self.denominator,self.numerator)
+
+    def to_ffraction(self):
+        num = self.numerator // self.denominator
+        numerator = self.numerator - (self.numerator // self.denominator)*self.denominator
+        denominator = self.denominator
+        return FFraction(num=num,numerator=numerator,denominator=denominator)
+
     def __int__(self):
         return int(self.numerator / self.denominator)
 
     def __float__(self):
         return self.numerator / self.denominator
 
+class FFraction:
+    def __init__(self,num,numerator,denominator):
+        self.fraction = Fraction.__init__(num*denominator+numerator,denominator)
+        self.num = num
+        self.numerator = numerator
+        self.denominator = denominator
+
+    def __add__(self, other):
+        if isinstance(other,FFraction):
+            tmp1 = self.fraction + other.fraction
+            tmp2 = tmp1.denominator
+            tmp3 = tmp1.numerator
+            tmp4 = tmp3//tmp2
+            tmp3 -= tmp4*tmp2
+            return FFraction(tmp4,tmp3,tmp2)
+        elif isinstance(other,Fraction):
+            return self+FFraction(0,other.numerator,other.denominator)
+        elif isinstance(other,int):
+            return self+FFraction(other,0,1)
+        elif isinstance(other,float):
+            return self+(Fraction(0,1)+other)
+        else:
+            raise TypeError
+
+
+    def __sub__(self, other):
+        if isinstance(other,FFraction):
+            tmp1 = self.fraction - other.fraction
+            tmp2 = tmp1.denominator
+            tmp3 = tmp1.numerator
+            tmp4 = tmp3//tmp2
+            tmp3 -= tmp4*tmp2
+            return FFraction(tmp4,tmp3,tmp2)
+        elif isinstance(other,Fraction):
+            return self-FFraction(0,other.numerator,other.denominator)
+        elif isinstance(other,int):
+            return self-FFraction(other,0,1)
+        elif isinstance(other,float):
+            return self-(Fraction(0,1)+other)
+        else:
+            raise TypeError
+
+
+    def __mul__(self, other):
+        if isinstance(other,FFraction):
+            tmp1 = self.fraction * other.fraction
+            tmp2 = tmp1.denominator
+            tmp3 = tmp1.numerator
+            tmp4 = tmp3//tmp2
+            tmp3 -= tmp4*tmp2
+            return FFraction(tmp4,tmp3,tmp2)
+        elif isinstance(other,Fraction):
+            return self*FFraction(0,other.numerator,other.denominator)
+        elif isinstance(other,int):
+            return self*FFraction(other,0,1)
+        elif isinstance(other,float):
+            return self*(Fraction(0,1)+other)
+        else:
+            raise TypeError
+
+     
 
 if __name__ == '__main__':
     fr = Fraction(1, 2)
