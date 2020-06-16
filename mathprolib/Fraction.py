@@ -38,8 +38,7 @@ class Fraction:
             float_str = str(other)
             numbers = len(float_str) - float_str.find(".") - 1
             return self + Fraction(int(float_str.strip("i")), 10 ** numbers)
-        else:
-            raise TypeError(
+        raise TypeError(
                 f"cannot add from type {str(type(other))[8:-2]} to Fraction")
 
     def __sub__(self, other):
@@ -55,8 +54,8 @@ class Fraction:
             float_str = str(other)
             numbers = len(float_str) - float_str.find(".") - 1
             return self - Fraction(int(float_str.strip("i")), 10 ** numbers)
-        else:
-            raise TypeError(
+        
+        raise TypeError(
                 f"cannot sub from type {str(type(other))[8:-2]} to Fraction")
 
     def __mul__(self, other):
@@ -71,9 +70,8 @@ class Fraction:
         elif isinstance(other, float):
             float_str = str(other)
             numbers = len(float_str) - float_str.find(".") - 1
-            return self * Fraction(int(float_str.strip("i")), 10 ** numbers)
-        else:
-            raise TypeError(
+            return self * Fraction(int(float_str.strip("i")), 10 ** numbers)        
+        raise TypeError(
                 f"cannot mul from type {str(type(other))[8:-2]} to Fraction")
 
     def __truediv__(self, other):
@@ -85,8 +83,7 @@ class Fraction:
             float_str = str(1 / other)
             numbers = len(float_str) - float_str.find(".") - 1
             return self * Fraction(int(float_str.strip("i")), 10 ** numbers)
-        else:
-            raise TypeError(
+        raise TypeError(
                 f"cannot div from type {str(type(other))[8:-2]} to Fraction")
 
     def reciprocal(self):
@@ -125,8 +122,7 @@ class FFraction:
             return self+FFraction(other,0,1)
         elif isinstance(other,float):
             return self+(Fraction(0,1)+other)
-        else:
-            raise TypeError
+        raise TypeError
 
 
     def __sub__(self, other):
@@ -143,8 +139,7 @@ class FFraction:
             return self-FFraction(other,0,1)
         elif isinstance(other,float):
             return self-(Fraction(0,1)+other)
-        else:
-            raise TypeError
+        raise TypeError
 
 
     def __mul__(self, other):
@@ -161,8 +156,7 @@ class FFraction:
             return self*FFraction(other,0,1)
         elif isinstance(other,float):
             return self*(Fraction(0,1)+other)
-        else:
-            raise TypeError
+        raise TypeError
 
      
 
