@@ -16,7 +16,16 @@ class Fraction:
             numerator1 = self.numerator*other.denominator
             numerator2 = self.denominator*other.numerator
             return numerator1 < numerator2
+        else:
+            return float(self) < other
 
+    def __eq__(self, other):
+        if isinstance(other,Fraction):
+            numerator1 = self.numerator*other.denominator
+            numerator2 = self.denominator*other.numerator
+            return numerator1 == numerator2
+        else:
+            return abs(float(self) - other) <= 1e-5
 
     def __init__(self, numerator, denominator):
         self.numerator = numerator
