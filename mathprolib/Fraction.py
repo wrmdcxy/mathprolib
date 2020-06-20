@@ -182,14 +182,14 @@ class MixedFraction(Fraction):
 	@numerator.setter
 	def numerator(self,value):
 		nm=value
+		def itg():
+			nonlocal self
+			nonlocal nm
+			temp=nm//self.denominator
+			if temp>0:
+				nm-=self.denominator*temp
+				self.integer+=temp
 		if nm>=self.denominator:
-			def itg():
-				nonlocal self
-				nonlocal nm
-				temp=nm//self.denominator
-				if temp>0:
-					nm-=self.denominator*temp
-					self.integer+=temp
 			itg()
 		elif nm<0:
 			nm+=self.integer*self.denominator
