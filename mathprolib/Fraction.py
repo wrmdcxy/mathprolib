@@ -1,5 +1,6 @@
 from functools import total_ordering
 from logging import warning as warn
+from math import floor
 class CalculateError(Exception):
 	pass
 
@@ -30,7 +31,7 @@ class Fraction(object):
 	def reduction(self,factor=None):
 		if factor==None:
 			factor=self.__gongyue(self._numerator,self.denominator)
-		if self._numerator/factor!=int(str(self._numerator/factor).split('.')[0]) or self.denominator/factor!=int(str(self.denominator/factor).split('.')[0]):
+		if self._numerator/factor!=floor(self._numerator/factor) or self.denominator/factor!=floor(self.denominator/factor):
 			warn(f"Reduction failed.Cannot reduction by {factor}")
 			return
 		self._numerator//=factor
