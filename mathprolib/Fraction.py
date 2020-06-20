@@ -1,174 +1,222 @@
-
 from functools import total_ordering
+from logging import warning as warn
+class CalculateError(Exception):
+	pass
 
+class Fraction(object):
+	def __gongyue(self,a,b):
+		while b!=0:
+			temp=a%b
+			a=b
+			b=temp
+		return a
 
-def gcd(x, y):
-    smaller = x if x < y else y
-    g = [i for i in range(1, smaller + 1) if x % i == 0 and y % i == 0][-1]
-    return g
+	def __init__(self,_numerator,denominator):
+		if denominator==0:
+			raise CalculateError("fatal error:Denominator = 0")
+		self._numerator=_numerator
+		self.denominator=denominator
 
+	def __float__(self):
+		return self._numerator/self.denominator
+
+	def general(self,factor):
+		self._numerator*=factor
+		self.denominator*=factor
+
+	def all(self):
+		return (self._numerator,self.denominator)
+
+	def reduction(self,factor=None):
+		if factor==None:
+			factor=self.__gongyue(self._numerator,self.denominator)
+		if self._numerator/factor!=int(str(self._numerator/factor).split('.')[0]) or self.denominator/factor!=int(str(self.denominator/factor).split('.')[0]):
+			warn(f"Reduction failed.Cannot reduction by {factor}")
+			return
+		self._numerator//=factor
+		self.denominator//=factor
+
+	def common(self,other):
+		if type(other)!=int and (not isinstance(other,Fraction)) and type(other)!=float:
+			raise TypeError(f"can only concatenate Fraction (not {type(other)}) to Fraction")
+		else:
+			if type(other)==int:
+				ofra=VulgarFraction(self.denominator*other,self.denominator)
+			elif type(other)==float:
+				l=10**len(str(other).split(".")[1])
+				ofra=VulgarFraction(int(other*l),l)
+				ofra.reduction()
+				p=ofra.denominator*self.denominator//self.__gongyue(ofra.denominator,self.denominator)
+				self._numerator*=p//self.denominator
+				ofra._numerator*=p//ofra.denominator
+				self.denominator,ofra.denominator=p,p
+			else:
+				ofra=VulgarFraction(other._numerator,other.denominator)
+				p=ofra.denominator*self.denominator//self.__gongyue(ofra.denominator,self.denominator)
+				self._numerator*=p//self.denominator
+				ofra._numerator*=p//ofra.denominator
+				self.denominator,ofra.denominator=p,p
+			return ofra
 
 @total_ordering
-class Fraction:
+class VulgarFraction(Fraction):
+	def toMixed(self):
+		temp=MixedFraction(0,0,self.denominator)
+		temp.numerator=self.numerator
+		return temp
 
-    def __lt__(self, other):
-        if isinstance(other,Fraction):
-            numerator1 = self.numerator*other.denominator
-            numerator2 = self.denominator*other.numerator
-            return numerator1 < numerator2
-        else:
-            return float(self) < other
+	@property
+	def numerator(self):
+		return self._numerator
 
-    def __eq__(self, other):
-        if isinstance(other,Fraction):
-            numerator1 = self.numerator*other.denominator
-            numerator2 = self.denominator*other.numerator
-            return numerator1 == numerator2
-        else:
-            return abs(float(self) - other) <= 1e-5
+	@numerator.setter
+	def numerator(self,value):
+		self._numerator=value
+	
+	def __str__(self):
+		if self.numerator==self.denominator:
+			return '1'
+		if self.numerator==0:
+			return '0'
+		return f"{self.numerator}\n{'—' * len(str(max(self.numerator, self.denominator)))}\n{self.denominator}"
 
-    def __init__(self, numerator, denominator):
-        self.numerator = numerator
-        self.denominator = denominator
+	def __add__(self,other):
+		fra=VulgarFraction(self.numerator,self.denominator)
+		if type(other)==int:
+			fra.numerator+=other*fra.denominator
+		elif type(other)==float or isinstance(other,Fraction):
+			fra.numerator+=fra.common(other).numerator
+		else:
+			raise TypeError(f"can only concatenate Fraction (not {type(other)}) to Fraction")
+		fra.reduction()
+		return fra
 
-    def __str__(self):
-        return f"{self.numerator}\n{'—' * len(str(max(self.numerator, self.denominator)))}\n{self.denominator}"
+	def __sub__(self,other):
+		fra=VulgarFraction(self.numerator,self.denominator)
+		if type(other)==int:
+			fra.numerator-=other*fra.denominator
+		elif type(other)==float or isinstance(other,Fraction):
+			fra.numerator-=fra.common(other).numerator
+		else:
+			raise TypeError(f"can only concatenate Fraction (not {type(other)}) to Fraction")
+		fra.reduction()
+		return fra
 
-    def __add__(self, other):
-        if isinstance(other, Fraction):
-            tmp1, tmp2 = other.denominator * self.denominator, other.numerator * self.denominator + self.numerator * other.denominator
-            tmp3 = tmp1 // gcd(tmp1, tmp2)
-            tmp2 = tmp2 // (tmp1 // tmp2)
-            del tmp1
-            return Fraction(tmp2, tmp3)
-        elif isinstance(other, int):
-            return self + Fraction(other, 1)
-        elif isinstance(other, float):
-            float_str = str(other)
-            numbers = len(float_str) - float_str.find(".") - 1
-            return self + Fraction(int(float_str.strip("i")), 10 ** numbers)
-        raise TypeError(
-                f"cannot add from type {str(type(other))[8:-2]} to Fraction")
+	def __mul__(self,other):
+		fra=VulgarFraction(self.numerator,self.denominator)
+		if type(other)==int:
+			fra.numerator*=other
+		elif type(other)==float or isinstance(other,Fraction):
+			temp=fra.common(other)
+			fra.numerator*=temp.numerator
+			fra.denominator*=temp.denominator
+		else:
+			raise TypeError(f"can only concatenate Fraction (not {type(other)}) to Fraction")
+		fra.reduction()
+		return fra
 
-    def __sub__(self, other):
-        if isinstance(other, Fraction):
-            tmp1, tmp2 = other.denominator * self.denominator, other.numerator * self.denominator - self.numerator * other.denominator
-            tmp3 = tmp1 // gcd(tmp1, tmp2)
-            tmp2 = tmp2 // (tmp1 // tmp2)
-            del tmp1
-            return Fraction(tmp2, tmp3)
-        elif isinstance(other, int):
-            return self - Fraction(other, 1)
-        elif isinstance(other, float):
-            float_str = str(other)
-            numbers = len(float_str) - float_str.find(".") - 1
-            return self - Fraction(int(float_str.strip("i")), 10 ** numbers)
-        
-        raise TypeError(
-                f"cannot sub from type {str(type(other))[8:-2]} to Fraction")
+	def __truediv__(self,other):
+		fra=VulgarFraction(self.numerator,self.denominator)
+		if type(other)==int:
+			fra.denominator*=other
+		elif type(other)==float or isinstance(other,Fraction):
+			temp=fra.common(other)
+			fra.numerator*=temp.denominator
+			fra.denominator*=temp.numerator
+		else:
+			raise TypeError(f"can only concatenate Fraction (not {type(other)}) to Fraction")
+		fra.reduction()
+		return fra
 
-    def __mul__(self, other):
-        if isinstance(other, Fraction):
-            tmp1, tmp2 = other.denominator * self.denominator, self.numerator * self.numerator
-            tmp3 = tmp1 // gcd(tmp1, tmp2)
-            tmp2 = tmp2 // (tmp1 // tmp2)
-            del tmp1
-            return Fraction(tmp2, tmp3)
-        elif isinstance(other, int):
-            return self * Fraction(other, 1)
-        elif isinstance(other, float):
-            float_str = str(other)
-            numbers = len(float_str) - float_str.find(".") - 1
-            return self * Fraction(int(float_str.strip("i")), 10 ** numbers)        
-        raise TypeError(
-                f"cannot mul from type {str(type(other))[8:-2]} to Fraction")
+	def __eq__(self,other):
+		fra=VulgarFraction(self.numerator,self.denominator)
+		if type(other)==MixedFraction:
+			otr=other.toVulgar()
+			otr=fra.common(otr)
+		else:
+			otr=fra.common(other)
+		return fra.numerator==otr.numerator
 
-    def __truediv__(self, other):
-        if isinstance(other, Fraction):
-            return self * Fraction(other.denominator, other)
-        elif isinstance(other, int):
-            return self * Fraction(1, other)
-        elif isinstance(other, float):
-            float_str = str(1 / other)
-            numbers = len(float_str) - float_str.find(".") - 1
-            return self * Fraction(int(float_str.strip("i")), 10 ** numbers)
-        raise TypeError(
-                f"cannot div from type {str(type(other))[8:-2]} to Fraction")
+	def __lt__(self,other):
+		fra=VulgarFraction(self.numerator,self.denominator)
+		if type(other)==MixedFraction:
+			otr=other.toVulgar()
+			otr=fra.common(otr)
+		else:
+			otr=fra.common(other)
+		return fra.numerator<otr.numerator
 
-    def reciprocal(self):
-        return Fraction(self.denominator,self.numerator)
+@total_ordering
+class MixedFraction(Fraction):
+	def __init__(self,integer,numerator,denominator):
+		if numerator>=denominator:
+			raise CalculateError("Numerator should be smaller than denominator")
+		if integer<0:
+			raise CalculateError("fatal error:Calculate failed.Cause integer < 0")
+		super().__init__(numerator,denominator)
+		self.integer=integer
 
-    def to_ffraction(self):
-        num = self.numerator // self.denominator
-        numerator = self.numerator - (self.numerator // self.denominator)*self.denominator
-        denominator = self.denominator
-        return FFraction(num=num,numerator=numerator,denominator=denominator)
+	def __eq__(self,other):
+		fra=MixedFraction(self.integer,self.numerator,self.denominator).toVulgar()
+		otr=fra.common(other)
+		return fra==otr
 
-    def __int__(self):
-        return int(self.numerator / self.denominator)
+	def __lt__(self,other):
+		fra=MixedFraction(self.integer,self.numerator,self.denominator).toVulgar()
+		otr=fra.common(other)
+		return fra<otr
 
-    def __float__(self):
-        return self.numerator / self.denominator
+	def toVulgar(self):
+		num=self.integer*self.denominator+self.numerator
+		f=VulgarFraction(num,self.denominator)
+		return f
 
-class FFraction:
-    def __init__(self,num,numerator,denominator):
-        self.fraction = Fraction.__init__(num*denominator+numerator,denominator)
-        self.num = num
-        self.numerator = numerator
-        self.denominator = denominator
+	def all(self):
+		return (self.integer,self.numerator,self.denominator)
 
-    def __add__(self, other):
-        if isinstance(other,FFraction):
-            tmp1 = self.fraction + other.fraction
-            tmp2 = tmp1.denominator
-            tmp3 = tmp1.numerator
-            tmp4 = tmp3//tmp2
-            tmp3 -= tmp4*tmp2
-            return FFraction(tmp4,tmp3,tmp2)
-        elif isinstance(other,Fraction):
-            return self+FFraction(0,other.numerator,other.denominator)
-        elif isinstance(other,int):
-            return self+FFraction(other,0,1)
-        elif isinstance(other,float):
-            return self+(Fraction(0,1)+other)
-        raise TypeError
+	@property
+	def numerator(self):
+		return self._numerator
 
-
-    def __sub__(self, other):
-        if isinstance(other,FFraction):
-            tmp1 = self.fraction - other.fraction
-            tmp2 = tmp1.denominator
-            tmp3 = tmp1.numerator
-            tmp4 = tmp3//tmp2
-            tmp3 -= tmp4*tmp2
-            return FFraction(tmp4,tmp3,tmp2)
-        elif isinstance(other,Fraction):
-            return self-FFraction(0,other.numerator,other.denominator)
-        elif isinstance(other,int):
-            return self-FFraction(other,0,1)
-        elif isinstance(other,float):
-            return self-(Fraction(0,1)+other)
-        raise TypeError
+	@numerator.setter
+	def numerator(self,value):
+		nm=value
+		if nm>=self.denominator:
+			def itg():
+				nonlocal self
+				nonlocal nm
+				temp=nm//self.denominator
+				if temp>0:
+					nm-=self.denominator*temp
+					self.integer+=temp
+			itg()
+		elif nm<0:
+			nm+=self.integer*self.denominator
+			self.integer=0
+			itg()
+		else:
+			pass
+		self._numerator=nm
+		self.reduction()
 
 
-    def __mul__(self, other):
-        if isinstance(other,FFraction):
-            tmp1 = self.fraction * other.fraction
-            tmp2 = tmp1.denominator
-            tmp3 = tmp1.numerator
-            tmp4 = tmp3//tmp2
-            tmp3 -= tmp4*tmp2
-            return FFraction(tmp4,tmp3,tmp2)
-        elif isinstance(other,Fraction):
-            return self*FFraction(0,other.numerator,other.denominator)
-        elif isinstance(other,int):
-            return self*FFraction(other,0,1)
-        elif isinstance(other,float):
-            return self*(Fraction(0,1)+other)
-        raise TypeError
+	def __str__(self):
+		if self.numerator==0:
+			return str(self.integer)
+		return f"{' '*len(str(self.integer)) if self.integer!=0 else ''}{self.numerator}\n{self.integer if self.integer!=0 else ''}{'—' * len(str(max(self.numerator, self.denominator)))}\n{' '*len(str(self.integer)) if self.integer!=0 else ''}{self.denominator}"
 
-     
+	def __add__(self,other):
+		fra=MixedFraction(self.integer,self.numerator,self.denominator).toVulgar()
+		return (fra+other).toMixed()
 
-if __name__ == '__main__':
-    fr = Fraction(1, 2)
-    print(fr)
+	def __sub__(self,other):
+		fra=MixedFraction(self.integer,self.numerator,self.denominator).toVulgar()
+		return (fra-other).toMixed()
+
+	def __mul__(self,other):
+		fra=MixedFraction(self.integer,self.numerator,self.denominator).toVulgar()
+		return (fra*other).toMixed()
+
+	def __truediv__(self,other):
+		fra=MixedFraction(self.integer,self.numerator,self.denominator).toVulgar()
+		return (fra/other).toMixed()
