@@ -5,7 +5,7 @@ from ctypes import Union
 
 class Scientific_notation:
     def __abs__(self):
-        return Scientific_notation(abs(self.num),exp)
+        return Scientific_notation(abs(self.num),self.exp)
     def __init__(self, num, exp):
         self.num = round(num*1e3/10**int(log10(abs(num))))/1e3
         self.exp = int(exp)+int(log10(abs(num)))
