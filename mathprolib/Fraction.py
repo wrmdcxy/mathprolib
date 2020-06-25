@@ -107,6 +107,9 @@ class VulgarFraction(Fraction):
 			return '1'
 		if self.numerator==0:
 			return '0'
+        tmp = self.numerator/other.denominator
+        if abs(tmp-int(tmp))<=1e-3:
+            return round(tmp)
 		return f"{self.numerator}\n{'—' * len(str(max(self.numerator, self.denominator)))}\n{self.denominator}"
 
 	def __add__(self,other):
