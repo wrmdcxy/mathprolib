@@ -107,8 +107,7 @@ class Scientific_notation:
                 return self.num%int(float(other))
 
     def __pow__(self, power, modulo=None):
+        power = float(power)
         if modulo is None:
             return Scientific_notation(self.num**power,self.exp*power)
 
-if __name__ == "__main__":
-    print(Scientific_notation(3,4)%Scientific_notation(4,1))
