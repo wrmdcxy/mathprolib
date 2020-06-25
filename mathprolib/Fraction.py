@@ -5,6 +5,31 @@ class CalculateError(Exception):
 	pass
 
 class Fraction(object):
+	@staticmethod
+	def log(*args):
+		if len(args)==0:
+			return
+		line1=''
+		line2=''
+		line3=''
+		for msg in args:
+			if isinstance(msg,Fraction):
+				temp=(len(str(max(msg._numerator,msg.denominator))))//2+1
+				line1+=' '*temp
+				line1+=str(msg._numerator)+' '*temp
+				line3+=' '*temp
+				line3+=str(msg.denominator)+' '*temp
+				line2+=' '*temp+'—'*temp+' '
+			else:
+				line1+=' '*len(str(msg))
+				line3+=' '*len(str(msg))
+				line2+=str(msg)
+		if line1.strip()!='':
+			print(line1)
+		print(line2)
+		if line3.strip()!='':
+			print(line3)
+
 	def __gongyue(self,a,b):
 		while b!=0:
 			temp=a%b
@@ -24,6 +49,9 @@ class Fraction(object):
 	def general(self,factor):
 		self._numerator*=factor
 		self.denominator*=factor
+
+	def isSimple(self):
+		return self.__gongyue(self.numerator,self.denominator)==1
 
 	def all(self):
 		return (self._numerator,self.denominator)
@@ -147,6 +175,9 @@ class VulgarFraction(Fraction):
 			otr=fra.common(other)
 		return fra.numerator<otr.numerator
 
+	def rec(self):
+		self._numerator,self.denominator=self.denominator,self._numerator
+
 @total_ordering
 class MixedFraction(Fraction):
 	def __init__(self,integer,numerator,denominator):
@@ -174,6 +205,13 @@ class MixedFraction(Fraction):
 
 	def all(self):
 		return (self.integer,self.numerator,self.denominator)
+
+	def rec(self):
+		fra=MixedFraction(self.integer,self.numerator,self.denominator).toVulgar()
+		fra.rec()
+		self.integer=0
+		self.denominator=fra.denominator
+		self.numerator=fra.numerator
 
 	@property
 	def numerator(self):
