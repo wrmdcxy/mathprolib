@@ -7,7 +7,7 @@ func UGcd(x,y uint64) uint64,float64{
         if tmp > 0 {
 	        return UGcd(y, tmp),200.0
         } else {
-		    return y,200.0 // 此数为HTTP 200的意思|||2097152：你不能返回一个错误类型咩
+		    return y,200.0
 	    }
 	}
 	return 0,403.0
@@ -35,7 +35,6 @@ func (f UFraction) Add(F UFraction){
         "numerator":numerator
     }
     return result
-    //golang咩有分好就是方便
 }
 
 func (f UFraction) Sub(F UFraction){
@@ -48,5 +47,4 @@ func (f UFraction) Sub(F UFraction){
         "numerator":numerator
     }
     return result
-    //golang咩有分好就是方便
 }
